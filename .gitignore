@@ -1,0 +1,15 @@
+.DS_Store
+*.crt
+*.key
+.vscode
+*.exe
+*.exe~
+bin
+*.test.DS_Store
+*.crt
+*.key
+.vscode
+*.exe
+*.exe~
+bin
+*.test

@@ -1,0 +1,31 @@
+version: '1.0'
+
+services:
+  data-preparation:
+    image: data-preparation:1.0.0
+    build:
+      context: ./data-preparation
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+
+  model-builder:
+    image: model-builder:1.0.0
+    build:
+      context: ./model-builder
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+    depends_on:
+      - data-preparation
+
+
+  model-evaluation:
+    image: model-evaluation:1.0.0
+    build:
+      context: ./model-evaluation
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8000"
+    depends_on:
+      - model-builder

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: model-builder
+  name: model-builder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-builder
+  template:
+    metadata:
+      labels:
+        app: model-builder
+    spec:
+      containers:
+        - name: model-builder
+          image: model-builder:1.0.0
+          env:
+            - name: DATA_PREPARATION_URL
+              value: "http://data-preparation.default.svc.cluster.local"
+            - name: MODEL_EVALUATION_URL
+              value: "http://model-evaluation.default.svc.cluster.local"
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          resources:
+            limits:
+              cpu: "2"
+              memory: 2Gi
+            requests:
+              cpu: "1"
+              memory: 1Gi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
